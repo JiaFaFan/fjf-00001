@@ -553,6 +553,56 @@
             border: 2px dashed rgba(184, 145, 90, 0.3);
         }
 
+        .timer-mode-switch {
+            display: flex;
+            gap: 8px;
+            padding: 6px;
+            background: rgba(184, 145, 90, 0.15);
+            border-radius: 20px;
+        }
+
+        .timer-mode-btn {
+            padding: 8px 28px;
+            border: none;
+            background: transparent;
+            color: #a0824f;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 16px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .timer-mode-btn:hover {
+            color: #6b4f2d;
+        }
+
+        .timer-mode-btn.active {
+            background: rgba(255, 227, 166, 0.8);
+            color: #6b4f2d;
+            box-shadow: 0 2px 8px rgba(184, 145, 90, 0.2);
+        }
+
+        .timer-single-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timer-display-super {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 80px;
+            font-weight: 400;
+            color: #6b4f2d;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.4);
+            letter-spacing: 4px;
+        }
+
         .timer-row {
             display: flex;
             align-items: center;
@@ -868,6 +918,15 @@
                 border-radius: 36px;
             }
 
+            .timer-mode-btn {
+                padding: 10px 36px;
+                font-size: 18px;
+            }
+
+            .timer-display-super {
+                font-size: 108px;
+            }
+
             .timer-label {
                 font-size: 16px;
             }
@@ -1069,6 +1128,16 @@
             .practice-timer-container {
                 padding: 16px 16px;
                 gap: 12px;
+            }
+
+            .timer-mode-btn {
+                padding: 6px 20px;
+                font-size: 14px;
+                letter-spacing: 2px;
+            }
+
+            .timer-display-super {
+                font-size: 60px;
             }
 
             .timer-row {
@@ -1281,10 +1350,20 @@
         </div>
 
         <div class="practice-timer-container">
-            <div class="timer-row">
+            <div class="timer-mode-switch">
+                <button class="timer-mode-btn active" data-mode="countup" id="btnModeCountup">正计时</button>
+                <button class="timer-mode-btn" data-mode="countdown" id="btnModeCountdown">倒计时</button>
+            </div>
+
+            <div class="timer-single-display" id="timerSingleDisplay">
+                <div class="timer-label">练习时长</div>
+                <div class="timer-display-super" id="practiceTimeDisplay">00:00</div>
+            </div>
+
+            <div class="timer-row" id="timerRow" style="display: none;">
                 <div class="timer-block">
                     <div class="timer-label">练习时长</div>
-                    <div class="timer-display-large" id="practiceTimeDisplay">00:00</div>
+                    <div class="timer-display-large" id="practiceTimeDisplay2">00:00</div>
                 </div>
                 <div class="timer-divider"></div>
                 <div class="timer-block">
@@ -1293,7 +1372,7 @@
                 </div>
             </div>
 
-            <div class="target-setup" id="targetSetup">
+            <div class="target-setup" id="targetSetup" style="display: none;">
                 <span class="target-label">目标时长</span>
                 <div class="target-inputs">
                     <div class="target-input-group">
@@ -1943,11 +2022,19 @@
         }
 
         const practiceTimeDisplay = document.getElementById('practiceTimeDisplay');
+        const practiceTimeDisplay2 = document.getElementById('practiceTimeDisplay2');
         const remainingTimeDisplay = document.getElementById('remainingTimeDisplay');
         const targetMinutesInput = document.getElementById('targetMinutes');
         const targetSecondsInput = document.getElementById('targetSeconds');
         const btnResetTimer = document.getElementById('btnResetTimer');
+        const btnModeCountup = document.getElementById('btnModeCountup');
+        const btnModeCountdown = document.getElementById('btnModeCountdown');
+        const timerSingleDisplay = document.getElementById('timerSingleDisplay');
+        const timerRow = document.getElementById('timerRow');
+        const targetSetup = document.getElementById('targetSetup');
 
+        const MAX_COUNTUP_MS = 60 * 60 * 1000;
+        let timerMode = 'countup';
         let practiceElapsed = 0;
         let targetTotalMs = 5 * 60 * 1000;
         let remainingMs = targetTotalMs;
@@ -1963,14 +2050,45 @@
         }
 
         function updateTimerDisplays() {
-            practiceTimeDisplay.textContent = formatTime(practiceElapsed);
-            remainingTimeDisplay.textContent = formatTime(Math.max(0, remainingMs));
-
-            if (remainingMs <= 10000 && remainingMs > 0) {
-                remainingTimeDisplay.classList.add('warning');
-            } else {
-                remainingTimeDisplay.classList.remove('warning');
+            const countupText = formatTime(practiceElapsed);
+            practiceTimeDisplay.textContent = countupText;
+            if (practiceTimeDisplay2) {
+                practiceTimeDisplay2.textContent = countupText;
             }
+
+            if (timerMode === 'countdown') {
+                remainingTimeDisplay.textContent = formatTime(Math.max(0, remainingMs));
+                if (remainingMs <= 10000 && remainingMs > 0) {
+                    remainingTimeDisplay.classList.add('warning');
+                } else {
+                    remainingTimeDisplay.classList.remove('warning');
+                }
+            }
+        }
+
+        function switchTimerMode(mode) {
+            if (timerMode === mode) return;
+
+            stopPracticeTimer();
+            timerMode = mode;
+
+            btnModeCountup.classList.toggle('active', mode === 'countup');
+            btnModeCountdown.classList.toggle('active', mode === 'countdown');
+
+            if (mode === 'countup') {
+                timerSingleDisplay.style.display = 'flex';
+                timerRow.style.display = 'none';
+                targetSetup.style.display = 'none';
+                practiceElapsed = 0;
+            } else {
+                timerSingleDisplay.style.display = 'none';
+                timerRow.style.display = 'flex';
+                targetSetup.style.display = 'flex';
+                practiceElapsed = 0;
+                remainingMs = targetTotalMs;
+            }
+
+            updateTimerDisplays();
         }
 
         function playTimerEndSound() {
@@ -1999,15 +2117,17 @@
             const delta = now - timerStartTime;
             timerStartTime = now;
 
-            practiceElapsed += delta;
-            remainingMs -= delta;
+            practiceElapsed = Math.min(practiceElapsed + delta, MAX_COUNTUP_MS);
 
-            if (remainingMs <= 0) {
-                remainingMs = 0;
-                updateTimerDisplays();
-                playTimerEndSound();
-                stopMetronome();
-                return;
+            if (timerMode === 'countdown') {
+                remainingMs -= delta;
+                if (remainingMs <= 0) {
+                    remainingMs = 0;
+                    updateTimerDisplays();
+                    playTimerEndSound();
+                    stopMetronome();
+                    return;
+                }
             }
 
             updateTimerDisplays();
@@ -2034,7 +2154,9 @@
         function resetPracticeTimer() {
             stopPracticeTimer();
             practiceElapsed = 0;
-            remainingMs = targetTotalMs;
+            if (timerMode === 'countdown') {
+                remainingMs = targetTotalMs;
+            }
             updateTimerDisplays();
         }
 
@@ -2055,6 +2177,9 @@
             updateTimerDisplays();
         }
 
+        btnModeCountup.addEventListener('click', () => switchTimerMode('countup'));
+        btnModeCountdown.addEventListener('click', () => switchTimerMode('countdown'));
+
         targetMinutesInput.addEventListener('input', clampTargetInput);
         targetSecondsInput.addEventListener('input', clampTargetInput);
         targetMinutesInput.addEventListener('blur', clampTargetInput);
@@ -2071,6 +2196,7 @@
             updateTimeSignature();
             resetDotPosition();
             clampTargetInput();
+            switchTimerMode('countup');
         });
         window.addEventListener('resize', () => {
             if (!isPlaying) resetDotPosition();
