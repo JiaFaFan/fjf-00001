@@ -165,6 +165,58 @@
             box-shadow: 0 0 0 3px rgba(217, 112, 44, 0.15);
         }
 
+        .sound-type-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            background: rgba(255, 248, 232, 0.7);
+            border-radius: 24px;
+            border: 2px dashed rgba(184, 145, 90, 0.3);
+        }
+
+        .sound-type-label {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 18px;
+            color: #6b4f2d;
+            letter-spacing: 4px;
+        }
+
+        .sound-type-select {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 18px;
+            color: #6b4f2d;
+            background: rgba(255, 227, 166, 0.6);
+            border: 2px solid rgba(184, 145, 90, 0.4);
+            border-radius: 16px;
+            padding: 8px 36px 8px 16px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+            letter-spacing: 2px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b4f2d' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+
+        .sound-type-select:hover {
+            background-color: rgba(255, 227, 166, 0.85);
+            border-color: rgba(184, 145, 90, 0.6);
+        }
+
+        .sound-type-select:focus {
+            border-color: rgba(217, 112, 44, 0.6);
+            box-shadow: 0 0 0 3px rgba(217, 112, 44, 0.15);
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
         .beat-indicator {
             display: flex;
             justify-content: center;
@@ -526,6 +578,21 @@
                 padding-right: 40px;
             }
 
+            .sound-type-container {
+                padding: 16px 32px;
+                gap: 16px;
+            }
+
+            .sound-type-label {
+                font-size: 20px;
+                letter-spacing: 6px;
+            }
+
+            .sound-type-select {
+                font-size: 22px;
+                padding: 10px 44px 10px 20px;
+            }
+
             .beat-indicator {
                 gap: 16px;
                 min-height: 48px;
@@ -624,6 +691,21 @@
                 padding-right: 30px;
             }
 
+            .sound-type-container {
+                padding: 10px 16px;
+                gap: 8px;
+            }
+
+            .sound-type-label {
+                font-size: 16px;
+                letter-spacing: 2px;
+            }
+
+            .sound-type-select {
+                font-size: 15px;
+                padding: 6px 30px 6px 10px;
+            }
+
             .beat-indicator {
                 gap: 8px;
             }
@@ -710,15 +792,29 @@
     <div class="metronome-container">
         <h1 class="title">节 拍 器</h1>
 
-        <div class="time-signature-container">
-            <label class="time-signature-label" for="timeSignature">拍号</label>
-            <select class="time-signature-select" id="timeSignature">
-                <option value="2/4">2/4</option>
-                <option value="3/4">3/4</option>
-                <option value="4/4" selected>4/4</option>
-                <option value="6/8">6/8</option>
-                <option value="5/4">5/4</option>
-            </select>
+        <div class="controls-row">
+            <div class="time-signature-container">
+                <label class="time-signature-label" for="timeSignature">拍号</label>
+                <select class="time-signature-select" id="timeSignature">
+                    <option value="2/4">2/4</option>
+                    <option value="3/4">3/4</option>
+                    <option value="4/4" selected>4/4</option>
+                    <option value="6/8">6/8</option>
+                    <option value="5/4">5/4</option>
+                </select>
+            </div>
+
+            <div class="sound-type-container">
+                <label class="sound-type-label" for="soundType">音色</label>
+                <select class="sound-type-select" id="soundType">
+                    <option value="sine" selected>正弦波</option>
+                    <option value="noise-wood">噪声木鱼</option>
+                    <option value="detune-metal">失谐金属</option>
+                    <option value="square-rim">方波边击</option>
+                    <option value="fm-sweep">FM扫频</option>
+                    <option value="narrow-pulse">窄脉冲</option>
+                </select>
+            </div>
         </div>
 
         <div class="beat-indicator" id="beatIndicator"></div>
@@ -781,6 +877,188 @@
         let scheduleAheadTime = 0.1;
         let schedulerTimer = null;
         const pendingBeats = [];
+        let currentSoundType = 'sine';
+        let noiseBuffer = null;
+
+        const soundTypeSelect = document.getElementById('soundType');
+
+        soundTypeSelect.addEventListener('change', () => {
+            currentSoundType = soundTypeSelect.value;
+        });
+
+        function createNoiseBuffer() {
+            const sampleRate = audioCtx.sampleRate;
+            const length = sampleRate * 0.15;
+            const buffer = audioCtx.createBuffer(1, length, sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < length; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+            return buffer;
+        }
+
+        function playSine(time, isAccent) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const freq = isAccent ? 1000 : 750;
+            const vol = isAccent ? 0.8 : 0.45;
+            const dur = isAccent ? 0.09 : 0.06;
+
+            osc.frequency.setValueAtTime(freq, time);
+            osc.frequency.exponentialRampToValueAtTime(freq * 0.5, time + dur);
+            gain.gain.setValueAtTime(0, time);
+            gain.gain.linearRampToValueAtTime(vol, time + 0.002);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+
+            osc.start(time);
+            osc.stop(time + dur + 0.01);
+        }
+
+        function playNoiseWood(time, isAccent) {
+            if (!noiseBuffer) noiseBuffer = createNoiseBuffer();
+
+            const source = audioCtx.createBufferSource();
+            source.buffer = noiseBuffer;
+
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.setValueAtTime(isAccent ? 900 : 700, time);
+            filter.Q.setValueAtTime(isAccent ? 6 : 4, time);
+
+            const gain = audioCtx.createGain();
+            const vol = isAccent ? 0.85 : 0.45;
+            const dur = isAccent ? 0.1 : 0.07;
+
+            source.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            gain.gain.setValueAtTime(0, time);
+            gain.gain.linearRampToValueAtTime(vol, time + 0.001);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+
+            source.start(time);
+            source.stop(time + dur + 0.01);
+        }
+
+        function playDetuneMetal(time, isAccent) {
+            const freq1 = isAccent ? 1200 : 900;
+            const freq2 = freq1 * 1.03;
+
+            const osc1 = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc1.type = 'sine';
+            osc2.type = 'sine';
+            osc1.frequency.setValueAtTime(freq1, time);
+            osc2.frequency.setValueAtTime(freq2, time);
+            osc1.connect(gain);
+            osc2.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const vol = isAccent ? 0.55 : 0.3;
+            const dur = isAccent ? 0.12 : 0.08;
+
+            gain.gain.setValueAtTime(0, time);
+            gain.gain.linearRampToValueAtTime(vol, time + 0.001);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+
+            osc1.start(time);
+            osc1.stop(time + dur + 0.01);
+            osc2.start(time);
+            osc2.stop(time + dur + 0.01);
+        }
+
+        function playSquareRim(time, isAccent) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'square';
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const freq = isAccent ? 800 : 600;
+            const vol = isAccent ? 0.5 : 0.25;
+            const dur = isAccent ? 0.04 : 0.025;
+
+            osc.frequency.setValueAtTime(freq, time);
+            osc.frequency.exponentialRampToValueAtTime(freq * 0.4, time + dur);
+            gain.gain.setValueAtTime(0, time);
+            gain.gain.linearRampToValueAtTime(vol, time + 0.001);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+
+            osc.start(time);
+            osc.stop(time + dur + 0.01);
+        }
+
+        function playFmSweep(time, isAccent) {
+            const carrier = audioCtx.createOscillator();
+            const modulator = audioCtx.createOscillator();
+            const modGain = audioCtx.createGain();
+            const outGain = audioCtx.createGain();
+
+            carrier.type = 'sine';
+            modulator.type = 'sine';
+
+            const carrierFreq = isAccent ? 600 : 450;
+            const modDepth = isAccent ? 400 : 250;
+
+            modulator.frequency.setValueAtTime(isAccent ? 180 : 120, time);
+            modGain.gain.setValueAtTime(modDepth, time);
+            modGain.gain.exponentialRampToValueAtTime(1, time + (isAccent ? 0.1 : 0.07));
+
+            modulator.connect(modGain);
+            modGain.connect(carrier.frequency);
+            carrier.frequency.setValueAtTime(carrierFreq, time);
+
+            carrier.connect(outGain);
+            outGain.connect(audioCtx.destination);
+
+            const vol = isAccent ? 0.7 : 0.4;
+            const dur = isAccent ? 0.12 : 0.08;
+
+            outGain.gain.setValueAtTime(0, time);
+            outGain.gain.linearRampToValueAtTime(vol, time + 0.002);
+            outGain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+
+            modulator.start(time);
+            carrier.start(time);
+            modulator.stop(time + dur + 0.01);
+            carrier.stop(time + dur + 0.01);
+        }
+
+        function playNarrowPulse(time, isAccent) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const freq = isAccent ? 2200 : 1600;
+            const vol = isAccent ? 0.65 : 0.35;
+            const dur = isAccent ? 0.025 : 0.015;
+
+            osc.frequency.setValueAtTime(freq, time);
+            gain.gain.setValueAtTime(0, time);
+            gain.gain.linearRampToValueAtTime(vol, time + 0.0005);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+
+            osc.start(time);
+            osc.stop(time + dur + 0.01);
+        }
+
+        const soundFns = {
+            'sine': playSine,
+            'noise-wood': playNoiseWood,
+            'detune-metal': playDetuneMetal,
+            'square-rim': playSquareRim,
+            'fm-sweep': playFmSweep,
+            'narrow-pulse': playNarrowPulse
+        };
 
         function updateTimeSignature() {
             currentTimeSignature = timeSignatureSelect.value;
@@ -835,35 +1113,9 @@
         }
 
         function playClick(time, beatInMeasure) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            let baseFreq = 1400;
-            let volume = 0.5;
-            let duration = 0.06;
-
-            if (accentBeats.includes(beatInMeasure)) {
-                baseFreq = 1800;
-                volume = 0.85;
-                duration = 0.08;
-            } else if (secondaryAccentBeats.includes(beatInMeasure)) {
-                baseFreq = 1600;
-                volume = 0.7;
-                duration = 0.07;
-            }
-
-            osc.frequency.setValueAtTime(baseFreq, time);
-            osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.6, time + 0.04);
-
-            gain.gain.setValueAtTime(0, time);
-            gain.gain.linearRampToValueAtTime(volume, time + 0.001);
-            gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
-
-            osc.start(time);
-            osc.stop(time + duration + 0.02);
+            const isAccent = accentBeats.includes(beatInMeasure);
+            const fn = soundFns[currentSoundType] || playSine;
+            fn(time, isAccent);
         }
 
         function scheduleNote(beatNumber, beatInMeasure, time) {
