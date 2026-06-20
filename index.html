@@ -541,6 +541,204 @@
             transform: scale(0.95);
         }
 
+        .timer-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            background: rgba(255, 248, 232, 0.7);
+            border-radius: 28px;
+            border: 2px dashed rgba(184, 145, 90, 0.3);
+        }
+
+        .timer-mode-switch {
+            display: flex;
+            gap: 8px;
+            padding: 6px;
+            background: rgba(184, 145, 90, 0.15);
+            border-radius: 20px;
+        }
+
+        .timer-mode-btn {
+            padding: 8px 24px;
+            border: none;
+            background: transparent;
+            color: #a0824f;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 16px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .timer-mode-btn:hover {
+            color: #6b4f2d;
+        }
+
+        .timer-mode-btn.active {
+            background: rgba(255, 227, 166, 0.8);
+            color: #6b4f2d;
+            box-shadow: 0 2px 8px rgba(184, 145, 90, 0.2);
+        }
+
+        .timer-display {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 72px;
+            font-weight: 400;
+            color: #6b4f2d;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.4);
+            letter-spacing: 4px;
+        }
+
+        .timer-display.warning {
+            color: #d9702c;
+        }
+
+        .timer-setup {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .timer-input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .timer-input-label {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 14px;
+            color: #a0824f;
+            letter-spacing: 2px;
+        }
+
+        .timer-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .timer-input-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid rgba(184, 145, 90, 0.4);
+            background: radial-gradient(circle at 35% 30%, #ffe3a6 0%, #f5c46e 50%, #e8a84a 100%);
+            color: #6b4f2d;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.12s ease, box-shadow 0.15s ease;
+            user-select: none;
+            box-shadow: 0 3px 8px rgba(184, 145, 90, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            font-family: inherit;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .timer-input-btn:active {
+            transform: scale(0.90);
+            box-shadow: 0 1px 4px rgba(184, 145, 90, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.08);
+        }
+
+        .timer-input {
+            width: 70px;
+            height: 48px;
+            text-align: center;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 28px;
+            color: #6b4f2d;
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgba(184, 145, 90, 0.35);
+            border-radius: 12px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            font-variant-numeric: tabular-nums;
+            -moz-appearance: textfield;
+        }
+
+        .timer-input::-webkit-outer-spin-button,
+        .timer-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .timer-input:focus {
+            border-color: rgba(217, 112, 44, 0.6);
+            box-shadow: 0 0 0 3px rgba(217, 112, 44, 0.15);
+        }
+
+        .timer-separator {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 36px;
+            color: #6b4f2d;
+            padding-bottom: 22px;
+            line-height: 1;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .timer-btn {
+            padding: 12px 32px;
+            border-radius: 24px;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 18px;
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease;
+            user-select: none;
+            border: none;
+        }
+
+        .timer-btn-toggle {
+            background: radial-gradient(circle at 35% 25%, #a7e5b4 0%, #6dcf82 50%, #4fb868 100%);
+            color: white;
+            border: 2.5px solid rgba(92, 168, 110, 0.4);
+            box-shadow: 0 5px 14px rgba(92, 168, 110, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.08);
+            min-width: 120px;
+        }
+
+        .timer-btn-toggle:hover {
+            box-shadow: 0 7px 18px rgba(92, 168, 110, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        }
+
+        .timer-btn-toggle.running {
+            background: radial-gradient(circle at 35% 25%, #ffb3a3 0%, #f08a78 50%, #e06852 100%);
+            border-color: rgba(224, 104, 82, 0.45);
+            box-shadow: 0 5px 14px rgba(224, 104, 82, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        }
+
+        .timer-btn-reset {
+            background: rgba(255, 255, 255, 0.6);
+            color: #6b4f2d;
+            border: 2.5px solid rgba(184, 145, 90, 0.35);
+            box-shadow: 0 4px 12px rgba(184, 145, 90, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .timer-btn-reset:hover {
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 6px 16px rgba(184, 145, 90, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .timer-btn:active {
+            transform: scale(0.95);
+        }
+
         .bpm-slider-container {
             width: 100%;
             padding: 0 8px;
@@ -701,6 +899,47 @@
                 letter-spacing: 10px;
             }
 
+            .timer-container {
+                padding: 28px 32px;
+                gap: 20px;
+                border-radius: 36px;
+            }
+
+            .timer-mode-btn {
+                padding: 10px 32px;
+                font-size: 18px;
+            }
+
+            .timer-display {
+                font-size: 96px;
+            }
+
+            .timer-input {
+                width: 80px;
+                height: 56px;
+                font-size: 32px;
+            }
+
+            .timer-input-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 24px;
+            }
+
+            .timer-separator {
+                font-size: 44px;
+                padding-bottom: 26px;
+            }
+
+            .timer-btn {
+                padding: 14px 40px;
+                font-size: 20px;
+            }
+
+            .timer-btn-toggle {
+                min-width: 140px;
+            }
+
             .time-signature-container {
                 padding: 16px 32px;
                 gap: 16px;
@@ -853,6 +1092,37 @@
             .title {
                 font-size: 26px;
                 letter-spacing: 6px;
+            }
+
+            .timer-container {
+                padding: 16px 16px;
+                gap: 12px;
+            }
+
+            .timer-display {
+                font-size: 56px;
+            }
+
+            .timer-input {
+                width: 56px;
+                height: 42px;
+                font-size: 22px;
+            }
+
+            .timer-input-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
+            }
+
+            .timer-separator {
+                font-size: 28px;
+                padding-bottom: 18px;
+            }
+
+            .timer-btn {
+                padding: 10px 24px;
+                font-size: 16px;
             }
 
             .time-signature-container {
@@ -1023,6 +1293,40 @@
             <div class="beat-dot" id="beatDot"></div>
         </div>
 
+        <div class="timer-container">
+            <div class="timer-mode-switch">
+                <button class="timer-mode-btn active" data-mode="countup" id="btnModeCountup">正计时</button>
+                <button class="timer-mode-btn" data-mode="countdown" id="btnModeCountdown">倒计时</button>
+            </div>
+
+            <div class="timer-display" id="timerDisplay">00:00</div>
+
+            <div class="timer-setup" id="timerSetup" style="display: none;">
+                <div class="timer-input-group">
+                    <label class="timer-input-label">分</label>
+                    <div class="timer-input-wrapper">
+                        <button class="timer-input-btn" data-action="decrease" data-field="minutes">−</button>
+                        <input type="number" class="timer-input" id="timerMinutes" value="5" min="0" max="99">
+                        <button class="timer-input-btn" data-action="increase" data-field="minutes">+</button>
+                    </div>
+                </div>
+                <div class="timer-separator">:</div>
+                <div class="timer-input-group">
+                    <label class="timer-input-label">秒</label>
+                    <div class="timer-input-wrapper">
+                        <button class="timer-input-btn" data-action="decrease" data-field="seconds">−</button>
+                        <input type="number" class="timer-input" id="timerSeconds" value="0" min="0" max="59">
+                        <button class="timer-input-btn" data-action="increase" data-field="seconds">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timer-controls">
+                <button class="timer-btn timer-btn-reset" id="btnTimerReset">重置</button>
+                <button class="timer-btn timer-btn-toggle" id="btnTimerToggle">开始</button>
+            </div>
+        </div>
+
         <div class="bpm-display">
             <div class="bpm-value" id="bpmValue">100</div>
             <div class="bpm-label">BPM</div>
@@ -1047,7 +1351,7 @@
             <button class="btn-bpm" id="btnPlus" aria-label="增加BPM">+</button>
         </div>
 
-        <div class="hint">长按按钮可快速调节 · 空格键开始/停止 · T键Tap测速</div>
+        <div class="hint">长按按钮可快速调节 · 空格键开始/停止 · T键Tap测速 · 正计时随节拍器自动启停</div>
     </div>
 
     <script>
@@ -1446,6 +1750,10 @@
             btnToggle.classList.add('playing');
             scheduler();
             requestAnimationFrame(visualLoop);
+
+            if (typeof timerMode !== 'undefined' && timerMode === 'countup' && !timerRunning) {
+                startTimer();
+            }
         }
 
         function stopMetronome() {
@@ -1464,6 +1772,10 @@
             beatDot.style.boxShadow = '0 8px 22px rgba(217, 112, 44, 0.45), inset 0 -3px 8px rgba(0, 0, 0, 0.1), inset 0 2px 4px rgba(255, 255, 255, 0.35)';
             const dots = beatIndicator.querySelectorAll('.beat-dot-indicator');
             dots.forEach(dot => dot.classList.remove('active'));
+
+            if (typeof timerMode !== 'undefined' && timerMode === 'countup' && timerRunning) {
+                stopTimer();
+            }
         }
 
         function changeBPM(delta) {
@@ -1650,9 +1962,208 @@
             beatDot.style.transform = `translateX(${-swingRange}px) scale(1)`;
         }
 
+        const timerDisplay = document.getElementById('timerDisplay');
+        const btnModeCountup = document.getElementById('btnModeCountup');
+        const btnModeCountdown = document.getElementById('btnModeCountdown');
+        const timerSetup = document.getElementById('timerSetup');
+        const timerMinutesInput = document.getElementById('timerMinutes');
+        const timerSecondsInput = document.getElementById('timerSeconds');
+        const btnTimerToggle = document.getElementById('btnTimerToggle');
+        const btnTimerReset = document.getElementById('btnTimerReset');
+
+        let timerMode = 'countup';
+        let timerRunning = false;
+        let timerStartTime = 0;
+        let timerElapsed = 0;
+        let timerRafId = null;
+        let countdownTotal = 5 * 60 * 1000;
+        let countdownRemaining = countdownTotal;
+
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function updateTimerDisplay() {
+            let displayMs;
+            if (timerMode === 'countup') {
+                displayMs = timerElapsed;
+            } else {
+                displayMs = Math.max(0, countdownRemaining);
+            }
+            timerDisplay.textContent = formatTime(displayMs);
+
+            if (timerMode === 'countdown' && countdownRemaining <= 10000 && countdownRemaining > 0) {
+                timerDisplay.classList.add('warning');
+            } else {
+                timerDisplay.classList.remove('warning');
+            }
+        }
+
+        function timerLoop() {
+            if (!timerRunning) return;
+
+            const now = performance.now();
+            const delta = now - timerStartTime;
+            timerStartTime = now;
+
+            if (timerMode === 'countup') {
+                timerElapsed += delta;
+            } else {
+                countdownRemaining -= delta;
+                if (countdownRemaining <= 0) {
+                    countdownRemaining = 0;
+                    stopTimer();
+                    updateTimerDisplay();
+                    playTimerEndSound();
+                    return;
+                }
+            }
+
+            updateTimerDisplay();
+            timerRafId = requestAnimationFrame(timerLoop);
+        }
+
+        function playTimerEndSound() {
+            initAudio();
+            const now = audioCtx.currentTime;
+            for (let i = 0; i < 3; i++) {
+                const t = now + i * 0.3;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, t);
+                gain.gain.setValueAtTime(0, t);
+                gain.gain.linearRampToValueAtTime(0.5, t + 0.01);
+                gain.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(t);
+                osc.stop(t + 0.25);
+            }
+        }
+
+        function startTimer() {
+            if (timerRunning) return;
+
+            if (timerMode === 'countdown' && countdownRemaining <= 0) {
+                resetTimer();
+            }
+
+            initAudio();
+            timerRunning = true;
+            timerStartTime = performance.now();
+            btnTimerToggle.textContent = '暂停';
+            btnTimerToggle.classList.add('running');
+            timerRafId = requestAnimationFrame(timerLoop);
+        }
+
+        function stopTimer() {
+            timerRunning = false;
+            if (timerRafId) {
+                cancelAnimationFrame(timerRafId);
+                timerRafId = null;
+            }
+            btnTimerToggle.textContent = '开始';
+            btnTimerToggle.classList.remove('running');
+        }
+
+        function resetTimer() {
+            stopTimer();
+            if (timerMode === 'countup') {
+                timerElapsed = 0;
+            } else {
+                countdownRemaining = countdownTotal;
+            }
+            updateTimerDisplay();
+        }
+
+        function switchTimerMode(mode) {
+            if (timerMode === mode) return;
+
+            stopTimer();
+            timerMode = mode;
+
+            btnModeCountup.classList.toggle('active', mode === 'countup');
+            btnModeCountdown.classList.toggle('active', mode === 'countdown');
+
+            if (mode === 'countdown') {
+                timerSetup.style.display = 'flex';
+                countdownRemaining = countdownTotal;
+            } else {
+                timerSetup.style.display = 'none';
+                timerElapsed = 0;
+            }
+
+            updateTimerDisplay();
+        }
+
+        function clampCountdownInput() {
+            let mins = parseInt(timerMinutesInput.value, 10) || 0;
+            let secs = parseInt(timerSecondsInput.value, 10) || 0;
+
+            mins = Math.max(0, Math.min(99, mins));
+            secs = Math.max(0, Math.min(59, secs));
+
+            timerMinutesInput.value = mins;
+            timerSecondsInput.value = secs;
+
+            countdownTotal = (mins * 60 + secs) * 1000;
+            if (!timerRunning || timerMode === 'countup') {
+                countdownRemaining = countdownTotal;
+            }
+            updateTimerDisplay();
+        }
+
+        function adjustCountdownField(field, delta) {
+            if (timerRunning) return;
+
+            if (field === 'minutes') {
+                let val = parseInt(timerMinutesInput.value, 10) || 0;
+                val = Math.max(0, Math.min(99, val + delta));
+                timerMinutesInput.value = val;
+            } else if (field === 'seconds') {
+                let val = parseInt(timerSecondsInput.value, 10) || 0;
+                val = Math.max(0, Math.min(59, val + delta));
+                timerSecondsInput.value = val;
+            }
+
+            clampCountdownInput();
+        }
+
+        btnModeCountup.addEventListener('click', () => switchTimerMode('countup'));
+        btnModeCountdown.addEventListener('click', () => switchTimerMode('countdown'));
+
+        btnTimerToggle.addEventListener('click', () => {
+            if (timerRunning) {
+                stopTimer();
+            } else {
+                startTimer();
+            }
+        });
+
+        btnTimerReset.addEventListener('click', resetTimer);
+
+        timerMinutesInput.addEventListener('input', clampCountdownInput);
+        timerSecondsInput.addEventListener('input', clampCountdownInput);
+        timerMinutesInput.addEventListener('blur', clampCountdownInput);
+        timerSecondsInput.addEventListener('blur', clampCountdownInput);
+
+        document.querySelectorAll('.timer-input-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.dataset.action;
+                const field = btn.dataset.field;
+                const delta = action === 'increase' ? 1 : -1;
+                adjustCountdownField(field, delta);
+            });
+        });
+
         window.addEventListener('load', () => {
             updateTimeSignature();
             resetDotPosition();
+            updateTimerDisplay();
         });
         window.addEventListener('resize', () => {
             if (!isPlaying) resetDotPosition();
