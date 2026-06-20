@@ -119,6 +119,118 @@
             text-shadow: 1px 2px 0 rgba(255, 255, 255, 0.5);
         }
 
+        .time-signature-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            background: rgba(255, 248, 232, 0.7);
+            border-radius: 24px;
+            border: 2px dashed rgba(184, 145, 90, 0.3);
+        }
+
+        .time-signature-label {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 18px;
+            color: #6b4f2d;
+            letter-spacing: 4px;
+        }
+
+        .time-signature-select {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 22px;
+            color: #6b4f2d;
+            background: rgba(255, 227, 166, 0.6);
+            border: 2px solid rgba(184, 145, 90, 0.4);
+            border-radius: 16px;
+            padding: 8px 20px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+            letter-spacing: 2px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b4f2d' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        .time-signature-select:hover {
+            background-color: rgba(255, 227, 166, 0.85);
+            border-color: rgba(184, 145, 90, 0.6);
+        }
+
+        .time-signature-select:focus {
+            border-color: rgba(217, 112, 44, 0.6);
+            box-shadow: 0 0 0 3px rgba(217, 112, 44, 0.15);
+        }
+
+        .beat-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            min-height: 40px;
+            padding: 8px 16px;
+        }
+
+        .beat-dot-indicator {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(184, 145, 90, 0.25);
+            border: 2px solid rgba(184, 145, 90, 0.4);
+            transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .beat-dot-indicator.accent {
+            background: rgba(255, 140, 60, 0.3);
+            border-color: rgba(255, 140, 60, 0.5);
+        }
+
+        .beat-dot-indicator.secondary-accent {
+            background: rgba(255, 180, 100, 0.3);
+            border-color: rgba(255, 160, 80, 0.5);
+        }
+
+        .beat-dot-indicator.active {
+            transform: scale(1.3);
+            background: radial-gradient(circle at 32% 30%, #ffb366 0%, #f08838 45%, #d9702c 100%);
+            border-color: rgba(180, 90, 30, 0.5);
+            box-shadow: 0 4px 12px rgba(217, 112, 44, 0.5);
+        }
+
+        .beat-dot-indicator.accent.active {
+            background: radial-gradient(circle at 32% 30%, #ff9e5e 0%, #ff6b35 45%, #e8572a 100%);
+            border-color: rgba(200, 80, 30, 0.6);
+            box-shadow: 0 6px 16px rgba(255, 107, 53, 0.6);
+        }
+
+        .beat-dot-indicator.secondary-accent.active {
+            background: radial-gradient(circle at 32% 30%, #ffc07a 0%, #ff9955 45%, #f08040 100%);
+            border-color: rgba(220, 120, 60, 0.55);
+            box-shadow: 0 5px 14px rgba(255, 140, 70, 0.55);
+        }
+
+        .beat-dot-indicator::after {
+            content: attr(data-beat);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 14px;
+            color: #6b4f2d;
+            opacity: 0.7;
+        }
+
+        .beat-dot-indicator.active::after {
+            color: white;
+            opacity: 1;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
         .beat-visual {
             width: 100%;
             height: 180px;
@@ -398,6 +510,36 @@
                 letter-spacing: 10px;
             }
 
+            .time-signature-container {
+                padding: 16px 32px;
+                gap: 16px;
+            }
+
+            .time-signature-label {
+                font-size: 20px;
+                letter-spacing: 6px;
+            }
+
+            .time-signature-select {
+                font-size: 26px;
+                padding: 10px 24px;
+                padding-right: 40px;
+            }
+
+            .beat-indicator {
+                gap: 16px;
+                min-height: 48px;
+            }
+
+            .beat-dot-indicator {
+                width: 34px;
+                height: 34px;
+            }
+
+            .beat-dot-indicator::after {
+                font-size: 16px;
+            }
+
             .beat-visual {
                 height: 240px;
                 margin: 12px 0;
@@ -464,6 +606,35 @@
             .title {
                 font-size: 26px;
                 letter-spacing: 6px;
+            }
+
+            .time-signature-container {
+                padding: 10px 16px;
+                gap: 8px;
+            }
+
+            .time-signature-label {
+                font-size: 16px;
+                letter-spacing: 2px;
+            }
+
+            .time-signature-select {
+                font-size: 18px;
+                padding: 6px 14px;
+                padding-right: 30px;
+            }
+
+            .beat-indicator {
+                gap: 8px;
+            }
+
+            .beat-dot-indicator {
+                width: 24px;
+                height: 24px;
+            }
+
+            .beat-dot-indicator::after {
+                font-size: 12px;
             }
 
             .bpm-value {
@@ -539,6 +710,19 @@
     <div class="metronome-container">
         <h1 class="title">节 拍 器</h1>
 
+        <div class="time-signature-container">
+            <label class="time-signature-label" for="timeSignature">拍号</label>
+            <select class="time-signature-select" id="timeSignature">
+                <option value="2/4">2/4</option>
+                <option value="3/4">3/4</option>
+                <option value="4/4" selected>4/4</option>
+                <option value="6/8">6/8</option>
+                <option value="5/4">5/4</option>
+            </select>
+        </div>
+
+        <div class="beat-indicator" id="beatIndicator"></div>
+
         <div class="beat-visual">
             <div class="beat-track"></div>
             <div class="endpoint endpoint-left"></div>
@@ -568,19 +752,70 @@
         const btnPlus = document.getElementById('btnPlus');
         const btnToggle = document.getElementById('btnToggle');
         const beatDot = document.getElementById('beatDot');
+        const timeSignatureSelect = document.getElementById('timeSignature');
+        const beatIndicator = document.getElementById('beatIndicator');
 
         const MIN_BPM = 40;
         const MAX_BPM = 200;
         let bpm = 100;
         let isPlaying = false;
 
+        const timeSignatures = {
+            '2/4': { beats: 2, accents: [0], secondaryAccents: [] },
+            '3/4': { beats: 3, accents: [0], secondaryAccents: [] },
+            '4/4': { beats: 4, accents: [0], secondaryAccents: [2] },
+            '6/8': { beats: 6, accents: [0], secondaryAccents: [3] },
+            '5/4': { beats: 5, accents: [0], secondaryAccents: [2] }
+        };
+
+        let currentTimeSignature = '4/4';
+        let beatsPerMeasure = 4;
+        let accentBeats = [0];
+        let secondaryAccentBeats = [];
+
         let audioCtx = null;
         let nextNoteTime = 0.0;
         let currentBeat = 0;
+        let currentBeatInMeasure = 0;
         let lookahead = 25.0;
         let scheduleAheadTime = 0.1;
         let schedulerTimer = null;
         const pendingBeats = [];
+
+        function updateTimeSignature() {
+            currentTimeSignature = timeSignatureSelect.value;
+            const config = timeSignatures[currentTimeSignature];
+            beatsPerMeasure = config.beats;
+            accentBeats = config.accents;
+            secondaryAccentBeats = config.secondaryAccents;
+            buildBeatIndicator();
+        }
+
+        function buildBeatIndicator() {
+            beatIndicator.innerHTML = '';
+            for (let i = 0; i < beatsPerMeasure; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'beat-dot-indicator';
+                if (accentBeats.includes(i)) {
+                    dot.classList.add('accent');
+                } else if (secondaryAccentBeats.includes(i)) {
+                    dot.classList.add('secondary-accent');
+                }
+                dot.setAttribute('data-beat', i + 1);
+                beatIndicator.appendChild(dot);
+            }
+        }
+
+        function updateBeatIndicator(beatInMeasure) {
+            const dots = beatIndicator.querySelectorAll('.beat-dot-indicator');
+            dots.forEach((dot, index) => {
+                if (index === beatInMeasure) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
 
         function updateBPMDisplay() {
             bpmValueEl.textContent = bpm;
@@ -599,35 +834,51 @@
             }
         }
 
-        function playClick(time) {
+        function playClick(time, beatInMeasure) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
 
             osc.connect(gain);
             gain.connect(audioCtx.destination);
 
-            osc.frequency.setValueAtTime(1600, time);
-            osc.frequency.exponentialRampToValueAtTime(900, time + 0.04);
+            let baseFreq = 1400;
+            let volume = 0.5;
+            let duration = 0.06;
+
+            if (accentBeats.includes(beatInMeasure)) {
+                baseFreq = 1800;
+                volume = 0.85;
+                duration = 0.08;
+            } else if (secondaryAccentBeats.includes(beatInMeasure)) {
+                baseFreq = 1600;
+                volume = 0.7;
+                duration = 0.07;
+            }
+
+            osc.frequency.setValueAtTime(baseFreq, time);
+            osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.6, time + 0.04);
 
             gain.gain.setValueAtTime(0, time);
-            gain.gain.linearRampToValueAtTime(0.7, time + 0.001);
-            gain.gain.exponentialRampToValueAtTime(0.001, time + 0.06);
+            gain.gain.linearRampToValueAtTime(volume, time + 0.001);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
 
             osc.start(time);
-            osc.stop(time + 0.08);
+            osc.stop(time + duration + 0.02);
         }
 
-        function scheduleNote(beatNumber, time) {
-            playClick(time);
+        function scheduleNote(beatNumber, beatInMeasure, time) {
+            playClick(time, beatInMeasure);
             pendingBeats.push({
                 beat: beatNumber,
+                beatInMeasure: beatInMeasure,
                 time: time
             });
         }
 
         function scheduler() {
             while (nextNoteTime < audioCtx.currentTime + scheduleAheadTime) {
-                scheduleNote(currentBeat, nextNoteTime);
+                const beatInMeasure = currentBeat % beatsPerMeasure;
+                scheduleNote(currentBeat, beatInMeasure, nextNoteTime);
                 nextNoteTime += secondsPerBeat();
                 currentBeat++;
             }
@@ -670,6 +921,8 @@
             if (beatIndex > lastTriggeredBeat && beatIndex >= 0) {
                 const endWasRightSide = (beatIndex % 2 === 1);
                 triggerRipple(endWasRightSide ? 1 : -1);
+                const beatInMeasure = beatIndex % beatsPerMeasure;
+                updateBeatIndicator(beatInMeasure);
                 lastTriggeredBeat = beatIndex;
             }
 
@@ -702,12 +955,15 @@
             initAudio();
             isPlaying = true;
             currentBeat = 0;
+            currentBeatInMeasure = 0;
             pendingBeats.length = 0;
             lastTriggeredBeat = -1;
 
             const startDelay = 0.05;
             nextNoteTime = audioCtx.currentTime + startDelay;
             visualStartTime = nextNoteTime - secondsPerBeat();
+
+            updateBeatIndicator(0);
 
             btnToggle.textContent = '停 止';
             btnToggle.classList.add('playing');
@@ -729,6 +985,8 @@
             beatDot.style.transform = `translateX(${-swingRange}px) scale(1)`;
             beatDot.style.background = 'radial-gradient(circle at 32% 30%, #ffb366 0%, #f08838 45%, #d9702c 100%)';
             beatDot.style.boxShadow = '0 8px 22px rgba(217, 112, 44, 0.45), inset 0 -3px 8px rgba(0, 0, 0, 0.1), inset 0 2px 4px rgba(255, 255, 255, 0.35)';
+            const dots = beatIndicator.querySelectorAll('.beat-dot-indicator');
+            dots.forEach(dot => dot.classList.remove('active'));
         }
 
         function changeBPM(delta) {
@@ -738,6 +996,14 @@
                 updateBPMDisplay();
             }
         }
+
+        timeSignatureSelect.addEventListener('change', () => {
+            updateTimeSignature();
+            if (isPlaying) {
+                stopMetronome();
+                setTimeout(startMetronome, 100);
+            }
+        });
 
         btnMinus.addEventListener('click', () => changeBPM(-1));
         btnPlus.addEventListener('click', () => changeBPM(1));
@@ -807,7 +1073,10 @@
             beatDot.style.transform = `translateX(${-swingRange}px) scale(1)`;
         }
 
-        window.addEventListener('load', resetDotPosition);
+        window.addEventListener('load', () => {
+            updateTimeSignature();
+            resetDotPosition();
+        });
         window.addEventListener('resize', () => {
             if (!isPlaying) resetDotPosition();
         });
